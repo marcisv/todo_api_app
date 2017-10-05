@@ -5,7 +5,7 @@ class Task < ApplicationRecord
 
   validates :title, presence: true
 
-  accepts_nested_attributes_for :task_tags
+  accepts_nested_attributes_for :task_tags, allow_destroy: true
 
   def tags=(tags)
     if tags.all? { |tag| tag.is_a? String }
@@ -18,13 +18,19 @@ class Task < ApplicationRecord
   private
 
   def set_tags_from_titles(tag_titles)
-    task_tags.each { |tt| tt.mark_for_destruction unless tag_titles.include?(tt.title) }
-    current_tag_titles = task_tags.map(&:title)
+    task_tags_with_tags = task_tags.includes(:tag)
+    current_tag_titles = task_tags_with_tags.map(&:title)
     new_tag_titles = tag_titles.select { |tag_title| current_tag_titles.exclude?(tag_title) }
-    self.task_tags_attributes = new_tag_titles.map do |new_title|
+    task_tags_attrs = new_tag_titles.map do |new_title|
       tag = Tag.find_by(title: new_title)
       tag ? {tag_id: tag.id} : {tag_attributes: {title: new_title}}
     end
+    task_tags_with_tags.each do |task_tag|
+      unless tag_titles.include?(task_tag.title)
+        task_tags_attrs << {id: task_tag.id, _destroy: true}
+      end
+    end
+    self.task_tags_attributes = task_tags_attrs
   end
 
 end

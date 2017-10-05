@@ -1,5 +1,7 @@
 class Api::V1::TasksController < ApplicationController
 
+  before_action :find_task, only: %i(update destroy)
+
   def index
     render json: Task.all
   end
@@ -14,7 +16,6 @@ class Api::V1::TasksController < ApplicationController
   end
 
   def update
-    @task = Task.find(params[:id])
     if @task.update_attributes(task_params)
       render json: @task
     else
@@ -22,7 +23,16 @@ class Api::V1::TasksController < ApplicationController
     end
   end
 
+  def destroy
+    @task.destroy
+    head 204
+  end
+
   private
+
+  def find_task
+    @task = Task.find(params[:id])
+  end
 
   def task_params
     ActiveModelSerializers::Deserialization.jsonapi_parse!(params, only: [:title, :tags])

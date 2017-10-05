@@ -15,6 +15,8 @@ gem 'active_model_serializers', '~> 0.10.0'
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rspec-rails', '~> 3.6'
+  gem 'json_spec', '~> 1.1.5'
+  gem 'factory_girl_rails', '~> 4.8.0'
 end
 
 group :development do

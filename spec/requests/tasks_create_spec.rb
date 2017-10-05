@@ -58,6 +58,7 @@ RSpec.describe 'tasks#create', type: :request do
       post '/api/v1/tasks', params: {data: {attributes: {title: task_title}}}
 
       expect(response.status).to eq 400
+      expect(response.body).to have_json_path 'errors'
     end
   end
 

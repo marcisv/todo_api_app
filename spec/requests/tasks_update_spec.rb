@@ -48,6 +48,7 @@ RSpec.describe 'tasks#update', type: :request do
       patch "/api/v1/tasks/#{task.id}", params: {data: {type: 'tasks', id: 2, attributes: {title: new_task_title}}}
 
       expect(response.status).to eq 400
+      expect(response.body).to have_json_path 'errors'
     end
   end
 

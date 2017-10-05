@@ -31,6 +31,34 @@ RSpec.describe 'tasks#index', type: :request do
         ]}
       }
     end
+
+    context 'when tags exist for one of the tasks' do
+      let!(:task_2) { FactoryGirl.create(:task, tags: [tag_1, tag_2]) }
+      let(:tag_1) { FactoryGirl.create(:tag) }
+      let(:tag_2) { FactoryGirl.create(:tag) }
+
+      it 'returns the data with the tags included' do
+        get '/api/v1/tasks'
+
+        expect(response.body).to be_json_eql %{
+          {"data":[
+            {
+              "type":"tasks",
+              "id":"#{task_1.id}",
+              "attributes":{"title":"#{task_1.title}"},
+              "relationships": {"tags": {"data": []}}
+            }, {
+              "type":"tasks",
+              "id":"#{task_2.id}",
+              "attributes":{"title":"#{task_2.title}"},
+              "relationships": {"tags": {"data": [
+                {"id":"#{tag_1.id}","type":"tags"},{"id":"#{tag_2.id}xxxx","type":"tags"}
+              ]}}
+            }
+          ]}
+        }
+      end
+    end
   end
 
 end

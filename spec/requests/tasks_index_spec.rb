@@ -9,8 +9,8 @@ RSpec.describe 'tasks#index', type: :request do
   end
 
   context 'when some tasks exist' do
-    let!(:task1) { FactoryGirl.create(:task) }
-    let!(:task2) { FactoryGirl.create(:task) }
+    let!(:task_1) { FactoryGirl.create(:task) }
+    let!(:task_2) { FactoryGirl.create(:task) }
 
     it 'returns data with the tasks' do
       get '/api/v1/tasks'
@@ -19,13 +19,13 @@ RSpec.describe 'tasks#index', type: :request do
         {"data":[
           {
             "type":"tasks",
-            "id":"#{task1.id}",
-            "attributes":{"title":"#{task1.title}"},
+            "id":"#{task_1.id}",
+            "attributes":{"title":"#{task_1.title}"},
             "relationships": {"tags": {"data": []}}
           }, {
             "type":"tasks",
-            "id":"#{task2.id}",
-            "attributes":{"title":"#{task2.title}"},
+            "id":"#{task_2.id}",
+            "attributes":{"title":"#{task_2.title}"},
             "relationships": {"tags": {"data": []}}
           }
         ]}

@@ -20,11 +20,13 @@ RSpec.describe 'tasks#index', type: :request do
           {
             "type":"tasks",
             "id":"#{task1.id}",
-            "attributes":{"title":"#{task1.title}"}
+            "attributes":{"title":"#{task1.title}"},
+            "relationships": {"tags": {"data": []}}
           }, {
             "type":"tasks",
             "id":"#{task2.id}",
-            "attributes":{"title":"#{task2.title}"}
+            "attributes":{"title":"#{task2.title}"},
+            "relationships": {"tags": {"data": []}}
           }
         ]}
       }

@@ -14,7 +14,8 @@ RSpec.describe 'tasks#update', type: :request do
       {"data":{
         "id":"#{task.id}",
         "type":"tasks",
-        "attributes":{"title":"#{new_task_title}"}
+        "attributes":{"title":"#{new_task_title}"},
+        "relationships": {"tags": {"data": []}}
       }}
     }
   end

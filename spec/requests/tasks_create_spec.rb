@@ -19,7 +19,8 @@ RSpec.describe 'tasks#create', type: :request do
       {"data":{
         "id":"#{task.id}",
         "type":"tasks",
-        "attributes":{"title":"#{task.title}"}
+        "attributes":{"title":"#{task.title}"},
+        "relationships": {"tags": {"data": []}}
       }}
     }
   end

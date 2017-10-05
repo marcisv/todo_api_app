@@ -3,7 +3,7 @@ class Api::V1::TasksController < ApplicationController
   before_action :find_task, only: %i(update destroy)
 
   def index
-    render json: Task.all
+    render json: Task.all.includes(:tags)
   end
 
   def create

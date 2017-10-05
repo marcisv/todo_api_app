@@ -20,6 +20,27 @@ RSpec.describe 'tasks#update', type: :request do
     }
   end
 
+  context 'when updating a task with tags' do
+    let(:tag_titles) { %w(Today Tomorrow) }
+
+    it 'updates the task name and tags, and returns the JSON data with status 200' do
+      patch "/api/v1/tasks/#{task.id}", params: {data: {attributes: {title: new_task_title, tags: tag_titles}}}
+
+      expect(response.status).to eq 200
+      expect(task.tags.pluck(:title)).to eq tag_titles
+
+      tags_json = task.tags.map { |t| %{\{"id":"#{t.id}","type":"tags"\}} }.join(',')
+      expect(response.body).to be_json_eql %{
+        {"data":{
+          "id":"#{task.id}",
+          "type":"tasks",
+          "attributes":{"title":"#{new_task_title}"},
+          "relationships": {"tags":{"data":[#{tags_json}]}}
+        }}
+      }
+    end
+  end
+
   context 'when parameters are not valid' do
     let(:new_task_title) { '' }
 

@@ -25,7 +25,7 @@ class Api::V1::TasksController < ApplicationController
   private
 
   def task_params
-    ActiveModelSerializers::Deserialization.jsonapi_parse!(params, only: [:title])
+    ActiveModelSerializers::Deserialization.jsonapi_parse!(params, only: [:title, :tags])
   end
 
 end

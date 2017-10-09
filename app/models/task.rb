@@ -7,9 +7,9 @@ class Task < ApplicationRecord
 
   accepts_nested_attributes_for :task_tags, allow_destroy: true
 
-  def tags=(tags)
-    if tags.all? { |tag| tag.is_a? String }
-      set_tags_from_titles(tags)
+  def tags=(tags_or_tag_titles)
+    if tags_or_tag_titles.all? { |tag| tag.is_a? String }
+      set_tags_from_titles(tags_or_tag_titles)
     else
       super
     end

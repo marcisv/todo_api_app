@@ -1,7 +1,7 @@
 class Api::V1::TagsController < ApplicationController
 
   def index
-    render json: Tag.all
+    render json: params[:q].present? ? Tag.by_title(params[:q]) : Tag.all
   end
 
   def create
